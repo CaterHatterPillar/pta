@@ -13,7 +13,7 @@ from numpy import argsort, asarray
 from scipy import histogram, product
 from scipy.cluster.vq import kmeans, vq
 
-# scipy only works on floaing point numbers
+# scipy only works on floating point numbers
 def vertices_from_image(image):
     vertices = asarray(image)
     num_channels = vertices.shape[2]
