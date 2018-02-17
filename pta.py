@@ -8,8 +8,7 @@ Synopsis: ...
 import argparse
 import sys
 
-from PIL import Image
-
+from PIL import Image, ImageDraw
 from numpy import argsort, asarray
 from scipy import histogram, product
 from scipy.cluster.vq import kmeans, vq
@@ -42,10 +41,25 @@ def prominent_colors(image, num_colors):
     centroid_codebook = centroid_codebook.astype(int)
     return [tuple(centroid_codebook[most_frequent[i]]) for i in range(num_colors)]
 
-def pta(image):
+def add_color_range(image, colors, size = 50):
+    draw = ImageDraw.Draw(image)
+    for (range_idx, color) in enumerate(colors):
+        draw.rectangle(
+            xy=((0, range_idx * size), (size, (range_idx + 1) * size)),
+            fill=color, outline=None)
+
+def pta(image_arg):
+    image = Image.open(image_arg)
+
     colors = prominent_colors(image, 5)
     print('The most prominent colors are:\n%s' % '\n'.join(
         ['0x%02X%02X%02X' % color for color in colors]))
+
+    add_color_range(image, colors)
+    if image_arg is sys.stdout:
+        image.save(sys.stdout, 'PNG')
+    else:
+        image.save('out.png', 'PNG')
 
 def parser():
     parser = argparse.ArgumentParser(description=__doc__)
@@ -57,4 +71,4 @@ def parser():
 if __name__ == "__main__":
     args = parser().parse_args()
     with args.image:
-        pta(Image.open(args.image))
+        pta(args.image)
