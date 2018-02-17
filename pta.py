@@ -1,8 +1,6 @@
 #!/usr/bin/env python3
 """
-...
-
-Synopsis: ...
+Add a dominant color range to an image using K-means clustering.
 """
 
 import argparse
