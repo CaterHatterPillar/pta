@@ -56,7 +56,7 @@ def pta(image_arg):
         ['0x%02X%02X%02X' % color for color in colors]))
 
     add_color_range(image, colors)
-    if image_arg is sys.stdout:
+    if image_arg is sys.stdin:
         image.save(sys.stdout, 'PNG')
     else:
         image.save('out.png', 'PNG')
