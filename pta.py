@@ -22,10 +22,14 @@ def vertices_from_image(image):
     num_vertices = product(resolution)
     return vertices.reshape(num_vertices, num_channels).astype(float)
 
-THUMBNAIL_MAX = 100
+def create_thumbnail(image, thumbnail_max = 100):
+    thumbnail = image.copy()
+    thumbnail.thumbnail((thumbnail_max, thumbnail_max), Image.ANTIALIAS)
+    return thumbnail
+
 def prominent_colors(image, num_colors):
-    image.thumbnail((THUMBNAIL_MAX, THUMBNAIL_MAX), Image.ANTIALIAS)
-    vertices = vertices_from_image(image)
+    thumbnail = create_thumbnail(image)
+    vertices = vertices_from_image(thumbnail)
 
     # Because the vertices are colors they should all form finite
     # numbers, so we can disable check_finite
